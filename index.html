@@ -5,12 +5,75 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Snake</title>
+    <link rel="shortcut icon" href="images/favicon-256x256.png">
     <link rel="stylesheet" href="snake.css">
 </head>
 <body>
-    <h1>Snake</h1>
-    <h2 id="score"></h2>
-    <canvas id="board"></canvas>
-    <script src="snake.js"></script>
+    <div class="CenterBoard">
+        <h1>Snake</h1>
+        <p><button class="ModalButton" id="ModalButton">Show Controls</button></p>
+
+        <div class="tg-wrap"><table class="tg">
+            <thead>
+            <tr>
+                <th class="tg-0pky">Score</th>
+                <th class="tg-0lax">Seconds alive</th>
+                <th class="tg-0lax">Snake-length</th>
+                <th class="tg-0lax">Food eaten</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="tg-0laxc "><p id="score"></p></td>
+                <td class="tg-0laxc"><p id="seconds"></p></td>
+                <td class="tg-0laxc"><p id="bodylength"></p></td>
+                <td class="tg-0laxc"><p id="collected"></p></td>
+            </tr>
+            </tbody>
+        </table></div>
+        <h2 id="score"></h2> <h2 id="seconds"></h2>
+        <canvas id="board"></canvas>
+        <script src="snake.js"></script>
+    </div>
+
+    <div id="myModal" class="modal">
+
+        <div class="modal-content">
+            <button style="float: right" id="close">x</button>
+            <h2>Controls:</h2>
+            <h3>
+                <b>W / ↑ / K</b> - To move up<br />
+                <b>A / ← / H</b> - To move left<br />
+                <b>S / ↓ / J</b> - To move down<br />
+                <b>D / → / L</b> - To move right<br />
+            </h3>
+        </div>
+
+    </div>
+
+    <script>
+        let modal = document.getElementById("myModal");
+        let button = document.getElementById("ModalButton");
+        let span = document.getElementById("close");
+
+
+        button.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+
+       onkeyup = function () {
+            modal.style.display = "none";
+        }
+    </script>
 </body>
 </html>
