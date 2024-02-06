@@ -6,16 +6,16 @@
     display: block;
 
     .tg  {border-collapse:collapse;border-color:#aabcfe;border-spacing:0;border-style:solid;border-width:1px;
-        margin:0px auto;}
-    .tg td{background-color:#e8edff;border-color:#aabcfe;border-style:solid;border-width:0px;color:#669;
+        margin:0 auto;}
+    .tg td{background-color:#e8edff;border-color:#aabcfe;border-style:solid;border-width:0;color:#669;
         font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
-    .tg th{background-color:#b9c9fe;border-color:#aabcfe;border-style:solid;border-width:0px;color:#039;
+    .tg th{background-color:#b9c9fe;border-color:#aabcfe;border-style:solid;border-width:0;color:#039;
         font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
     .tg .tg-hmp3{background-color:#D2E4FC;text-align:left;vertical-align:top}
     .tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
     .tg .tg-0lax{text-align:left;vertical-align:top}
     .tg .tg-0laxc{text-align:center;vertical-align:top}
-    @media screen and (max-width: 767px) {.tg {width: auto !important;}.tg col {width: auto !important;}.tg-wrap {overflow-x: auto;-webkit-overflow-scrolling: touch;margin: auto 0px;}}
+    @media screen and (max-width: 767px) {.tg {width: auto !important;}.tg col {width: auto !important;}.tg-wrap {overflow-x: auto;-webkit-overflow-scrolling: touch;margin: auto 0;}}
 }
 
 .modal {
