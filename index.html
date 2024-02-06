@@ -17,17 +17,17 @@
             <thead>
             <tr>
                 <th class="tg-0pky">Score</th>
-                <th class="tg-0lax">Seconds alive</th>
-                <th class="tg-0lax">Snake-length</th>
+                <th class="tg-0lay">Seconds alive</th>
+                <th class="tg-0lay">Snake-length</th>
                 <th class="tg-0lax">Food eaten</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td class="tg-0laxc "><p id="score"></p></td>
-                <td class="tg-0laxc"><p id="seconds"></p></td>
-                <td class="tg-0laxc"><p id="bodylength"></p></td>
-                <td class="tg-0laxc"><p id="collected"></p></td>
+                <td class="tg-0lay"><p id="score"></p></td>
+                <td class="tg-0laf"><p id="seconds"></p></td>
+                <td class="tg-0lay"><p id="bodylength"></p></td>
+                <td class="tg-0la4"><p id="colected"></p></td>
             </tr>
             </tbody>
         </table></div>
@@ -35,7 +35,7 @@
         <script src="snake.js"></script>
     </div>
 
-    <div id="myModal" class="modal">
+    <div id="myModal" class="cmodal">
 
         <div class="modal-content">
             <button style="float: right" id="close">x</button>
@@ -48,6 +48,31 @@
             </h3>
         </div>
 
+    </div>
+
+    <div id="deathModal" class="dmodal">
+        <div class="dmodal-content">
+            <h1>Game Over</h1>
+            <h4>Your stats for this round:</h4>
+            <div class="tg-wrap"><table class="tg">
+                <thead>
+                <tr>
+                    <th class="tg-0pky">Score</th>
+                    <th class="tg-0lay">Seconds alive</th>
+                    <th class="tg-0lay">Snake-length</th>
+                    <th class="tg-0lax">Food eaten</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="tg-0lay "><p id="finalscore"></p></td>
+                    <td class="tg-0laf"><p id="finalseconds"></p></td>
+                    <td class="tg-0lay"><p id="finalbodylength"></p></td>
+                    <td class="tg-0la4"><p id="finalcolected"></p></td>
+                </tr>
+                </tbody>
+            </table></div>
+        </div>
     </div>
 
     <script>

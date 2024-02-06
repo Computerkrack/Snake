@@ -25,6 +25,7 @@ let collectedFood = 0
 liveScore.innerHTML = '0';
 AddBody();
 window.onload = function () {
+    document.getElementById("deathModal").style.display = 'none';
     document.getElementById("ModalButton").hidden = false;
     board = document.getElementById("board");
     board.height = rows * blockSize;
@@ -160,7 +161,7 @@ function moveUpdate() {
             gameOver = true;
             gameRunning = false;
             document.getElementById("ModalButton").hidden = false;
-            alert ("gameOver");
+            document.getElementById("deathModal").style.display = 'block';
         }
     }
 }
