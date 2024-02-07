@@ -14,13 +14,21 @@ let gameOver = false;
 let gameRunning = false;
 
 let liveScore = document.getElementById("score");
-let newScore = 0
-let liveSeconds = document.getElementById("seconds")
-let secondsCounted = 0
+let newScore = 0;
+let liveSeconds = document.getElementById("seconds");
+let secondsCounted = 0;
 let liveBodyLength = document.getElementById("bodylength");
 let bodyLength = 0;
-let liveFood = document.getElementById("collected")
-let collectedFood = 0
+let liveFood = document.getElementById("colected");
+let collectedFood = 0;
+let finalScore = document.getElementById("finalscore");
+let finalSeconds = document.getElementById("finalseconds");
+let finalBodyLength = document.getElementById("finalbodylength");
+let finalFood = document.getElementById("finalcolected");
+let score;
+let seconds;
+let length;
+let food;
 
 liveScore.innerHTML = '0';
 AddBody();
@@ -101,9 +109,9 @@ function updates() {
     ctx.fillStyle = "red";
     ctx.fillRect(foodX, foodY, blockSize, blockSize);
 
-    sendToHTML();
     moveUpdate();
     foodCheck();
+    sendToHTML();
 }
 
 function foodCheck() {
@@ -174,8 +182,19 @@ function secondsCounter() {
 }
 
 function sendToHTML() {
-    liveSeconds.innerHTML = secondsCounted;
-    liveScore.innerHTML = newScore;
-    liveBodyLength.innerHTML = bodyLength;
-    liveFood.innerHTML = collectedFood;
+    if(gameRunning) {
+        liveSeconds.innerHTML = secondsCounted;
+        liveScore.innerHTML = newScore;
+        liveBodyLength.innerHTML = bodyLength;
+        liveFood.innerHTML = collectedFood;
+    } else if(gameOver) {
+        seconds = liveSeconds;
+        score = liveScore;
+        length = liveBodyLength;
+        food = liveFood;
+        finalSeconds.innerHTML = seconds
+        finalScore.innerHTML = score
+        finalBodyLength.innerHTML=  length
+        finalFood.innerHTML = food
+    }
 }
