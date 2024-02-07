@@ -9,29 +9,74 @@
     <link rel="stylesheet" href="snake.css">
 </head>
 <body>
-    <div class="CenterBoard">
-        <h1>Snake</h1>
-        <p><button class="ModalButton" id="ModalButton">Show Controls</button></p>
+    <div class="wrapper">
+        <div class="CenterBoard">
+            <h1>Snake</h1>
+            <p><button class="ModalButton" id="ModalButton">Show Controls</button></p>
 
-        <div class="tg-wrap"><table class="tg">
-            <thead>
-            <tr>
-                <th class="tg-0pky">Score</th>
-                <th class="tg-0lay">Seconds alive</th>
-                <th class="tg-0lay">Snake-length</th>
-                <th class="tg-0lax">Food eaten</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td class="tg-0lay"><p id="score"></p></td>
-                <td class="tg-0laf"><p id="seconds"></p></td>
-                <td class="tg-0lay"><p id="bodylength"></p></td>
-                <td class="tg-0la4"><p id="colected"></p></td>
-            </tr>
-            </tbody>
-        </table></div>
-        <canvas id="board"></canvas>
+            <div class="tg-wrap"><table class="tg">
+                <thead>
+                <tr>
+                    <th class="tg-0pky">Score</th>
+                    <th class="tg-0lay">Seconds alive</th>
+                    <th class="tg-0lay">Snake-length</th>
+                    <th class="tg-0lax">Food eaten</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="tg-0lay"><p id="score"></p></td>
+                    <td class="tg-0laf"><p id="seconds"></p></td>
+                    <td class="tg-0lay"><p id="bodylength"></p></td>
+                    <td class="tg-0la4"><p id="colected"></p></td>
+                </tr>
+                </tbody>
+            </table></div>
+            <canvas id="board"></canvas>
+        </div>
+        <div class="leftscore">
+            <h2>Your Best Game:</h2>
+            <div class="tg-wrap"><table class="tg"  id="highScoreTable">
+                <thead>
+                <tr>
+                    <th class="tg-0pky">Score</th>
+                    <th class="tg-0lay">Seconds alive</th>
+                    <th class="tg-0lay">Snake-length</th>
+                    <th class="tg-0lax">Food eaten</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="tg-0lay"><p id="highScore"></p></td>
+                    <td class="tg-0laf"><p id="highSeconds"></p></td>
+                    <td class="tg-0lay"><p id="highBodyLength"></p></td>
+                    <td class="tg-0la4"><p id="highColected"></p></td>
+                </tr>
+                </tbody>
+            </table></div>
+            <div class="recentGame">
+
+                <h2>Recent Games:</h2>
+                <button id="showRecentGames" class="showGamesButton">Show Recent Games</button>
+                <div class="tg-wrap"><div class="tg"><table class="rgtable" id="recentGamesTable">
+                    <thead>
+                    <tr>
+                        <th class="tg-0pay">Score</th>
+                        <th class="tg-0lay">Seconds alive</th>
+                        <th class="tg-0lay">Snake-length</th>
+                        <th class="tg-0lax">Food eaten</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table></div></div>
+            </div>
+        </div>
+
+        <div id="AllGames">
+
+        </div>
     </div>
 
     <div id="myModal" class="cmodal">
@@ -71,6 +116,7 @@
                 </tr>
                 </tbody>
             </table></div>
+            <button id="restartbutton" class="restartbut">Restart</button>
         </div>
     </div>
 
@@ -98,7 +144,25 @@
             modal.style.display = "none";
         }
     </script>
+    <script>
+        let recentTable = document.getElementById("recentGamesTable");
+        let recentButton = document.getElementById("showRecentGames");
 
+        recentButton.onclick = function () {
+            if (recentTable.style.display !== "none") {
+                recentTable.style.display = "none";
+            } else if (recentTable.style.display !== "block") {
+                recentTable.style.display = "block";
+            }
+        }
+    </script>
+    <script>
+        let restartButton = document.getElementById("restartbutton");
+
+        restartButton.onclick = function () {
+            restart();
+        }
+    </script>
     <script src="snake.js"></script>
 </body>
 </html>

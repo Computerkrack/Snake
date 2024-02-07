@@ -1,5 +1,7 @@
+let temp = '!!temp42!!'
+
 let board;
-let blockSize= 27 % screen.height;
+let blockSize = 27 % screen.height;
 let rows = 20;
 let cols = 20;
 let ctx;
@@ -29,10 +31,35 @@ let score;
 let seconds;
 let length;
 let food;
+let LiveHighScore = document.getElementById("highScore");
+let LiveHighSeconds = document.getElementById("highSeconds");
+let LiveHighSnakeLength = document.getElementById("highBodyLength");
+let LiveHighFootEaten = document.getElementById("highColected");
+let highScore;
+let highSeconds;
+let highLength;
+let highColected;
+// --------------------------- End of Variables -------------------------------------------------------------
 
 liveScore.innerHTML = '0';
 AddBody();
-window.onload = function () {
+window.onload = function() {start();}
+function restart() {
+    document.getElementById("deathModal").style.display = "none";
+    gameOver = false;
+    gameRunning = false;
+    newScore = 0;
+    secondsCounted = 0;
+    bodyLength = 0;
+    collectedFood = 0;
+    snakeBody = [0,0];
+    SnakeHeadX = 0;
+    SnakeHeadY = 0;
+    speedY = 0;
+    speedX = 0;
+    start();
+}
+    function start () {
     document.getElementById("deathModal").style.display = 'none';
     document.getElementById("ModalButton").hidden = false;
     board = document.getElementById("board");
@@ -166,7 +193,7 @@ function moveUpdate() {
     for (let i = 1; i < snakeBody.length; i++) {
         if (snakeBody.length < 2) {
             break
-        } else if (snakeBody[i][0] === SnakeHeadX && snakeBody[i][1] === SnakeHeadY) {
+        } else if (snakeBody[i][0] === SnakeHeadX && snakeBody[i][1] === SnakeHeadY && bodyLength !== 0) {
             gameOver = true;
             gameRunning = false;
             document.getElementById("ModalButton").hidden = false;
@@ -192,12 +219,39 @@ function sendToHTML() {
 }
 
 function sendToHTMLgameOver() {
-        seconds = secondsCounted;
-        score = newScore;
-        length = bodyLength;
-        food = collectedFood;
-        finalSeconds.innerHTML = seconds;
-        finalScore.innerHTML = score;
-        finalBodyLength.innerHTML=  length;
-        finalFood.innerHTML = food;
+    updateHighScore();
+    score = newScore;
+    seconds = secondsCounted;
+    length = bodyLength;
+    food = collectedFood;
+    finalSeconds.innerHTML = seconds;
+    finalScore.innerHTML = score;
+    finalBodyLength.innerHTML=  length;
+    finalFood.innerHTML = food;
+    recentGamesTableWriter();
+}
+
+function updateHighScore() {
+    highScore = temp
+    highSeconds = temp
+    highLength = temp
+    highColected = temp
+    LiveHighScore.innerHTML = highScore
+    LiveHighSeconds.innerHTML = highSeconds
+    LiveHighSnakeLength.innerHTML = highLength
+    LiveHighFootEaten.innerHTML = highColected
+}
+
+function recentGamesTableWriter () {
+    let table = document.getElementById("recentGamesTable");
+    let row = table.insertRow(1);
+    let cell1= row.insertCell(0);
+    let cell2 = row.insertCell(1);
+    let cell3 = row.insertCell(2);
+    let cell4 =  row.insertCell(3);
+
+    cell1.innerHTML = temp //finalScore;
+    cell2.innerHTML = temp //finalSeconds;
+    cell3.innerHTML = temp //finalBodyLength;
+    cell4.innerHTML = temp //finalFood;
 }
