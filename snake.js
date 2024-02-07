@@ -45,6 +45,7 @@ window.onload = function () {
     setInterval(updates, 1000/10);
     setInterval(secondsCounter, 1000);
     setInterval(sendToHTML, 1)
+    setInterval(sendToHTMLgameOver, 1000/10)
 }
 
 
@@ -182,19 +183,21 @@ function secondsCounter() {
 }
 
 function sendToHTML() {
-    if(gameRunning) {
+    if (gameRunning) {
         liveSeconds.innerHTML = secondsCounted;
         liveScore.innerHTML = newScore;
         liveBodyLength.innerHTML = bodyLength;
         liveFood.innerHTML = collectedFood;
-    } else if(gameOver) {
-        seconds = liveSeconds;
-        score = liveScore;
-        length = liveBodyLength;
-        food = liveFood;
-        finalSeconds.innerHTML = seconds
-        finalScore.innerHTML = score
-        finalBodyLength.innerHTML=  length
-        finalFood.innerHTML = food
     }
+}
+
+function sendToHTMLgameOver() {
+        seconds = secondsCounted;
+        score = newScore;
+        length = bodyLength;
+        food = collectedFood;
+        finalSeconds.innerHTML = seconds;
+        finalScore.innerHTML = score;
+        finalBodyLength.innerHTML=  length;
+        finalFood.innerHTML = food;
 }
