@@ -225,7 +225,7 @@ function moveUpdate() {
 }
 
 function secondsCounter() {
-    if (gameRunning === true) {
+    if (gameRunning && !gameOver) {
         secondsCounted += 1
         newScore += 1
     }
@@ -241,7 +241,6 @@ function sendToHTML() {
 }
 
 function sendToHTMLgameOver() {
-    updateHighScore();
     score = newScore;
     seconds = secondsCounted;
     length = bodyLength;
@@ -250,13 +249,21 @@ function sendToHTMLgameOver() {
     finalScore.innerHTML = score;
     finalBodyLength.innerHTML=  length;
     finalFood.innerHTML = food;
+    updateHighScore();
 }
 
 function updateHighScore() {
-    highScore = temp
-    highSeconds = temp
-    highLength = temp
-    highColected = temp
+    if (newScore+secondsCounted+bodyLength+collectedFood > highScore+highSeconds+highLength+highColected) {
+        highScore = newScore
+        highSeconds = secondsCounted
+        highLength = bodyLength
+        highColected = collectedFood
+    } else if (RGArr.length === 2) {
+        highScore = newScore
+        highSeconds = secondsCounted
+        highLength = bodyLength
+        highColected = collectedFood
+    }
     LiveHighScore.innerHTML = highScore
     LiveHighSeconds.innerHTML = highSeconds
     LiveHighSnakeLength.innerHTML = highLength
