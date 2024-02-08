@@ -1,7 +1,8 @@
-let temp = '!!temp42!!'
-
+// ---- temp only for development ----
+let temp = '!!temp42!!';
+// ---- JS ----
 let board;
-let blockSize = 27 % screen.height;
+let blockSize = 25 % screen.height;
 let rows = 20;
 let cols = 20;
 let ctx;
@@ -14,7 +15,11 @@ let speedY = 0;
 let snakeBody = [];
 let gameOver = false;
 let gameRunning = false;
+let RGArr = [];
+let recentGame = [];
+let NowUsedRGArr = RGArr;
 
+// ----- from/for HTML ----
 let liveScore = document.getElementById("score");
 let newScore = 0;
 let liveSeconds = document.getElementById("seconds");
@@ -39,10 +44,16 @@ let highScore;
 let highSeconds;
 let highLength;
 let highColected;
+
 // --------------------------- End of Variables -------------------------------------------------------------
 
 liveScore.innerHTML = '0';
+liveSeconds.innerHTML = '0';
+liveBodyLength.innerHTML = '0';
+liveFood.innerHTML = '0';
+
 AddBody();
+
 window.onload = function() {start();}
 function restart() {
     document.getElementById("deathModal").style.display = "none";
@@ -57,22 +68,28 @@ function restart() {
     SnakeHeadY = 0;
     speedY = 0;
     speedX = 0;
-    start();
+    document.getElementById("ModalButton").hidden = false;
+    board = document.getElementById("board");
+    board.height = rows * blockSize;
+    board.width = cols * blockSize;
+    ctx = board.getContext("2d");
+    placeFood();
+    document.addEventListener("keyup", changeDirection);
 }
-    function start () {
+
+function start () {
     document.getElementById("deathModal").style.display = 'none';
     document.getElementById("ModalButton").hidden = false;
     board = document.getElementById("board");
     board.height = rows * blockSize;
     board.width = cols * blockSize;
     ctx = board.getContext("2d");
-
     placeFood();
     document.addEventListener("keyup", changeDirection);
-    setInterval(updates, 1000/10);
+    setInterval(updates, 100);
     setInterval(secondsCounter, 1000);
-    setInterval(sendToHTML, 1)
-    setInterval(sendToHTMLgameOver, 1000/10)
+    setInterval(sendToHTML, 1);
+    setInterval(sendToHTMLgameOver, 100);
 }
 
 
@@ -198,6 +215,11 @@ function moveUpdate() {
             gameRunning = false;
             document.getElementById("ModalButton").hidden = false;
             document.getElementById("deathModal").style.display = 'block';
+            deleteRGTable();
+            addRecentGame(newScore, secondsCounted, bodyLength, collectedFood);
+            for (let i = 0; i < RGArr.length; i++) {
+                recentGamesTableWriter(i);
+            }
         }
     }
 }
@@ -228,7 +250,6 @@ function sendToHTMLgameOver() {
     finalScore.innerHTML = score;
     finalBodyLength.innerHTML=  length;
     finalFood.innerHTML = food;
-    recentGamesTableWriter();
 }
 
 function updateHighScore() {
@@ -242,16 +263,28 @@ function updateHighScore() {
     LiveHighFootEaten.innerHTML = highColected
 }
 
-function recentGamesTableWriter () {
+function recentGamesTableWriter (i) {
     let table = document.getElementById("recentGamesTable");
     let row = table.insertRow(1);
     let cell1= row.insertCell(0);
     let cell2 = row.insertCell(1);
     let cell3 = row.insertCell(2);
     let cell4 =  row.insertCell(3);
+    cell1.innerHTML = NowUsedRGArr[i][0].toString();
+    cell2.innerHTML = NowUsedRGArr[i][1].toString();
+    cell3.innerHTML = NowUsedRGArr[i][2].toString();
+    cell4.innerHTML = NowUsedRGArr[i][3].toString();
+}
 
-    cell1.innerHTML = temp //finalScore;
-    cell2.innerHTML = temp //finalSeconds;
-    cell3.innerHTML = temp //finalBodyLength;
-    cell4.innerHTML = temp //finalFood;
+function addRecentGame(score, seconds, length, colected) {
+    recentGame.push(score, seconds, length, colected);
+    RGArr.push(recentGame);
+    recentGame = [];
+}
+
+function deleteRGTable () {
+    let RGTable = document.getElementById("recentGamesTable")
+    for (let i = RGTable.rows.length; i > 1; i--) {
+        RGTable.deleteRow(-1)
+    }
 }
