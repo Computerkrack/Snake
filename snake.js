@@ -1,5 +1,6 @@
 // ---- temp only for development ----
-let temp = '!!temp42!!';
+let temp;
+temp = '!!temp42!!';
 // ---- JS ----
 let board;
 let blockSize = 25 % screen.height;
@@ -15,9 +16,11 @@ let speedY = 0;
 let snakeBody = [];
 let gameOver = false;
 let gameRunning = false;
-let RGArr = [];
 let recentGame = [];
-let NowUsedRGArr = RGArr;
+let RGArr = [];
+// let HSArr = [0,0,0,0];
+// let newHighScoreWritten = false;
+
 
 // ----- from/for HTML ----
 let liveScore = document.getElementById("score");
@@ -40,10 +43,11 @@ let LiveHighScore = document.getElementById("highScore");
 let LiveHighSeconds = document.getElementById("highSeconds");
 let LiveHighSnakeLength = document.getElementById("highBodyLength");
 let LiveHighFootEaten = document.getElementById("highColected");
-let highScore;
-let highSeconds;
-let highLength;
-let highColected;
+let highScore = undefined;
+let highSeconds = undefined;
+let highLength = undefined;
+let highColected = undefined;
+let LSClearButton = document.getElementById("clearLSButton");
 
 // --------------------------- End of Variables -------------------------------------------------------------
 
@@ -78,6 +82,11 @@ function restart() {
 }
 
 function start () {
+    localStorageReader();
+    updateHighScore();
+    for (let i = 0; i < RGArr.length; i++) {
+        recentGamesTableWriter(i);
+    }
     document.getElementById("deathModal").style.display = 'none';
     document.getElementById("ModalButton").hidden = false;
     board = document.getElementById("board");
@@ -89,7 +98,9 @@ function start () {
     setInterval(updates, 100);
     setInterval(secondsCounter, 1000);
     setInterval(sendToHTML, 1);
-    setInterval(sendToHTMLgameOver, 100);
+    setInterval(updateHighScore, 1000);
+    setInterval(hide, 1000);
+    setInterval(localStorageWriter, 10000);
 }
 
 
@@ -216,6 +227,7 @@ function moveUpdate() {
             document.getElementById("ModalButton").hidden = false;
             document.getElementById("deathModal").style.display = 'block';
             deleteRGTable();
+            sendToHTMLgameOver();
             addRecentGame(newScore, secondsCounted, bodyLength, collectedFood);
             for (let i = 0; i < RGArr.length; i++) {
                 recentGamesTableWriter(i);
@@ -241,6 +253,7 @@ function sendToHTML() {
 }
 
 function sendToHTMLgameOver() {
+    updateHighScore();
     score = newScore;
     seconds = secondsCounted;
     length = bodyLength;
@@ -249,26 +262,44 @@ function sendToHTMLgameOver() {
     finalScore.innerHTML = score;
     finalBodyLength.innerHTML=  length;
     finalFood.innerHTML = food;
-    updateHighScore();
 }
 
 function updateHighScore() {
-    if (newScore+secondsCounted+bodyLength+collectedFood > highScore+highSeconds+highLength+highColected) {
-        highScore = newScore
-        highSeconds = secondsCounted
-        highLength = bodyLength
-        highColected = collectedFood
-    } else if (RGArr.length === 2) {
-        highScore = newScore
-        highSeconds = secondsCounted
-        highLength = bodyLength
-        highColected = collectedFood
+    // if (HSArr.length < 4) {
+    //     writeHighScore();
+    // }
+    if (newScore + secondsCounted + bodyLength + collectedFood > highScore + highSeconds + highLength + highColected) {
+        highScore = newScore;
+        highSeconds = secondsCounted;
+        highLength = bodyLength;
+        highColected = collectedFood;
+    } else if (RGArr === [0, 0, 0, 0]) {
+        highScore = newScore;
+        highSeconds = secondsCounted;
+        highLength = bodyLength;
+        highColected = collectedFood;
     }
-    LiveHighScore.innerHTML = highScore
-    LiveHighSeconds.innerHTML = highSeconds
-    LiveHighSnakeLength.innerHTML = highLength
-    LiveHighFootEaten.innerHTML = highColected
+    if (highScore === undefined) {
+        highScore = newScore;
+        highSeconds = secondsCounted
+        highLength = bodyLength;
+        highColected = collectedFood;
+    }
+    LiveHighScore.innerHTML = highScore;
+    LiveHighSeconds.innerHTML = highSeconds;
+    LiveHighSnakeLength.innerHTML = highLength;
+    LiveHighFootEaten.innerHTML = highColected;
 }
+
+// function writeHighScore() {
+//     HSArr = JSON.parse(localStorage.getItem("LHSArr"));
+//     alert(HSArr)
+//     highScore = HSArr[0];
+//     highSeconds = HSArr[1];
+//     highLength = HSArr[2];
+//     highColected = HSArr[3];
+//
+// }
 
 function recentGamesTableWriter (i) {
     let table = document.getElementById("recentGamesTable");
@@ -277,10 +308,10 @@ function recentGamesTableWriter (i) {
     let cell2 = row.insertCell(1);
     let cell3 = row.insertCell(2);
     let cell4 =  row.insertCell(3);
-    cell1.innerHTML = NowUsedRGArr[i][0].toString();
-    cell2.innerHTML = NowUsedRGArr[i][1].toString();
-    cell3.innerHTML = NowUsedRGArr[i][2].toString();
-    cell4.innerHTML = NowUsedRGArr[i][3].toString();
+    cell1.innerHTML = RGArr[i][0].toString();
+    cell2.innerHTML = RGArr[i][1].toString();
+    cell3.innerHTML = RGArr[i][2].toString();
+    cell4.innerHTML = RGArr[i][3].toString();
 }
 
 function addRecentGame(score, seconds, length, colected) {
@@ -294,4 +325,34 @@ function deleteRGTable () {
     for (let i = RGTable.rows.length; i > 1; i--) {
         RGTable.deleteRow(-1)
     }
+}
+
+function localStorageWriter () {
+    localStorage.deleteArray(RGArr);
+    // localStorage.deleteArray(HSArr);
+    localStorage.setItem("LRGArr", JSON.stringify(RGArr));
+    // localStorage.setItem("LHSArr", JSON.stringify(HSArr));
+}
+function localStorageReader () {
+    RGArr = JSON.parse(localStorage.getItem("LRGArr"));
+}
+
+//---------------
+Storage.prototype.deleteArray = function(arrayName) {
+    this.removeItem(arrayName);
+}
+//--------------
+
+
+function hide () {
+    if(gameRunning) {
+        LSClearButton.style.display = "none";
+    } else {
+        LSClearButton.style.display = "block";
+    }
+}
+LSClearButton.onclick = function () {
+    localStorage.clear();
+    deleteRGTable();
+    RGArr = [];
 }
