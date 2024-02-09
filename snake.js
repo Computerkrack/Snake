@@ -1,7 +1,7 @@
-// ---- temp only for development ----
+// ----- temp only for development -----
 let temp;
 temp = '!!temp42!!';
-// ---- JS ----
+// ----- JS -----
 let board;
 let blockSize = 25 % screen.height;
 let rows = 20;
@@ -22,7 +22,7 @@ let RGArr = [];
 // let newHighScoreWritten = false;
 
 
-// ----- from/for HTML ----
+// ----- from/for HTML -----
 let liveScore = document.getElementById("score");
 let newScore = 0;
 let liveSeconds = document.getElementById("seconds");
@@ -48,6 +48,11 @@ let highSeconds = undefined;
 let highLength = undefined;
 let highColected = undefined;
 let LSClearButton = document.getElementById("clearLSButton");
+
+// ----- Images -----
+let imgApple = document.getElementById("imgApple");
+imgApple.setAttribute("src", "/images/apple.webp");
+
 
 // --------------------------- End of Variables -------------------------------------------------------------
 
@@ -163,7 +168,7 @@ function updates() {
     ctx.fillRect(0, 0, rows * blockSize, cols * blockSize);
 
     ctx.fillStyle = "red";
-    ctx.fillRect(foodX, foodY, blockSize, blockSize);
+    ctx.drawImage(imgApple, foodX, foodY, blockSize, blockSize);
 
     moveUpdate();
     foodCheck();
