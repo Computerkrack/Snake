@@ -10,10 +10,13 @@
     <link rel="stylesheet" href="snake.css">
 </head>
 <body>
+    <div id="controlPanel" class="controlPanel">
+        <button class="clearLS" id="clearLSButton">Clear Local Storage</button>
+    </div>
     <div class="wrapper">
         <div class="CenterBoard">
             <h1>Snake</h1>
-            <p><button class="ModalButton" id="ModalButton">Show Controls</button></p>
+            <p><button class="modalButton" id="ModalButton">Show Controls</button></p>
 
             <div class="tg-wrap"><table class="tg">
                 <thead>
@@ -36,7 +39,7 @@
             <canvas id="board"></canvas>
         </div>
         <div class="leftscore">
-            <h2>Your Best Game:</h2>
+            <h2>This Sessions Best Game:</h2>
             <div class="tg-wrap"><table class="tg"  id="highScoreTable">
                 <thead>
                 <tr>
@@ -83,7 +86,7 @@
     <div id="myModal" class="cmodal">
 
         <div class="modal-content">
-            <button style="float: right" id="close">x</button>
+            <button class="button" style="float: right" id="close">x</button>
             <h2>Controls:</h2>
             <h3>
                 <b>W / ↑ / K</b> - To move up<br />
