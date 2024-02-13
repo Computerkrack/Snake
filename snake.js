@@ -273,7 +273,7 @@ function updateHighScore() {
         highSeconds = secondsCounted;
         highLength = bodyLength;
         highColected = collectedFood;
-    } else if (RGArr.length < 4) {
+    } else if (recentGamesArray.length < 1) {
         highScore = newScore;
         highSeconds = secondsCounted;
         highLength = bodyLength;
