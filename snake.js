@@ -1,7 +1,6 @@
 // ----- temp only for development -----
-let temp;
-temp = '!!temp42!!';
-// ----- JS -----
+let temp = '!!temp42!!';
+// ----- JS ----- //
 let board;
 let blockSize = 25 % screen.height;
 let rows = 20;
@@ -17,7 +16,7 @@ let snakeBody = [];
 let gameOver = false;
 let gameRunning = false;
 let recentGame = [];
-let RGArr = [];
+let recentGamesArray = [];
 // let HSArr = [0,0,0,0];
 // let newHighScoreWritten = false;
 
@@ -48,10 +47,6 @@ let highSeconds = undefined;
 let highLength = undefined;
 let highColected = undefined;
 let LSClearButton = document.getElementById("clearLSButton");
-
-// ----- Images -----
-let imgApple = document.getElementById("imgApple");
-imgApple.setAttribute("src", "/images/apple.webp");
 
 
 // --------------------------- End of Variables -------------------------------------------------------------
@@ -87,9 +82,9 @@ function restart() {
 }
 
 function start () {
-    localStorageReader();
+    //localStorageReader();
     updateHighScore();
-    for (let i = 0; i < RGArr.length; i++) {
+    for (let i = 0; i < recentGamesArray.length; i++) {
         recentGamesTableWriter(i);
     }
     document.getElementById("deathModal").style.display = 'none';
@@ -168,7 +163,7 @@ function updates() {
     ctx.fillRect(0, 0, rows * blockSize, cols * blockSize);
 
     ctx.fillStyle = "red";
-    ctx.drawImage(imgApple, foodX, foodY, blockSize, blockSize);
+    ctx.fillRect(foodX, foodY, blockSize, blockSize);
 
     moveUpdate();
     foodCheck();
@@ -234,7 +229,7 @@ function moveUpdate() {
             deleteRGTable();
             sendToHTMLgameOver();
             addRecentGame(newScore, secondsCounted, bodyLength, collectedFood);
-            for (let i = 0; i < RGArr.length; i++) {
+            for (let i = 0; i < recentGamesArray.length; i++) {
                 recentGamesTableWriter(i);
             }
         }
@@ -278,7 +273,7 @@ function updateHighScore() {
         highSeconds = secondsCounted;
         highLength = bodyLength;
         highColected = collectedFood;
-    } else if (RGArr === [0, 0, 0, 0]) {
+    } else if (RGArr.length < 4) {
         highScore = newScore;
         highSeconds = secondsCounted;
         highLength = bodyLength;
@@ -313,15 +308,15 @@ function recentGamesTableWriter (i) {
     let cell2 = row.insertCell(1);
     let cell3 = row.insertCell(2);
     let cell4 =  row.insertCell(3);
-    cell1.innerHTML = RGArr[i][0].toString();
-    cell2.innerHTML = RGArr[i][1].toString();
-    cell3.innerHTML = RGArr[i][2].toString();
-    cell4.innerHTML = RGArr[i][3].toString();
+    cell1.innerHTML = recentGamesArray[i][0].toString();
+    cell2.innerHTML = recentGamesArray[i][1].toString();
+    cell3.innerHTML = recentGamesArray[i][2].toString();
+    cell4.innerHTML = recentGamesArray[i][3].toString();
 }
 
 function addRecentGame(score, seconds, length, colected) {
     recentGame.push(score, seconds, length, colected);
-    RGArr.push(recentGame);
+    recentGamesArray.push(recentGame);
     recentGame = [];
 }
 
@@ -333,20 +328,14 @@ function deleteRGTable () {
 }
 
 function localStorageWriter () {
-    localStorage.deleteArray(RGArr);
-    // localStorage.deleteArray(HSArr);
-    localStorage.setItem("LRGArr", JSON.stringify(RGArr));
+    localStorage.removeItem(recentGamesArray);
+    // localStorage.removeItem(HSArr);
+    localStorage.setItem("LRGArr", JSON.stringify(recentGamesArray));
     // localStorage.setItem("LHSArr", JSON.stringify(HSArr));
 }
-function localStorageReader () {
-    RGArr = JSON.parse(localStorage.getItem("LRGArr"));
-}
-
-//---------------
-Storage.prototype.deleteArray = function(arrayName) {
-    this.removeItem(arrayName);
-}
-//--------------
+//function localStorageReader () {
+    //recentGamesArray = JSON.parse(localStorageRGArrtem("LRGArr"));
+// }
 
 
 function hide () {
@@ -359,5 +348,5 @@ function hide () {
 LSClearButton.onclick = function () {
     localStorage.clear();
     deleteRGTable();
-    RGArr = [];
+    recentGamesArray = [];
 }
