@@ -16,9 +16,10 @@ let snakeBody = [];
 let gameOver = false;
 let gameRunning = false;
 let recentGame = [];
-let recentGamesArray = [];
-// let HSArr = [0,0,0,0];
-// let newHighScoreWritten = false;
+
+let allRecentGamesArr = [];
+let highScoreArr = [0,0,0,0]; 
+let newHighScoreWritten = false; 
 
 
 // ----- from/for HTML -----
@@ -38,10 +39,10 @@ let score;
 let seconds;
 let length;
 let food;
-let LiveHighScore = document.getElementById("highScore");
-let LiveHighSeconds = document.getElementById("highSeconds");
-let LiveHighSnakeLength = document.getElementById("highBodyLength");
-let LiveHighFootEaten = document.getElementById("highColected");
+let liveHighScore = document.getElementById("highScore");
+let liveHighSeconds = document.getElementById("highSeconds");
+let liveHighSnakeLength = document.getElementById("highBodyLength");
+let liveHighFootEaten = document.getElementById("highColected");
 let highScore = undefined;
 let highSeconds = undefined;
 let highLength = undefined;
@@ -84,7 +85,7 @@ function restart() {
 function start () {
     //localStorageReader();
     updateHighScore();
-    for (let i = 0; i < recentGamesArray.length; i++) {
+    for (let i = 0; i < allRecentGamesArr.length; i++) {
         recentGamesTableWriter(i);
     }
     document.getElementById("deathModal").style.display = 'none';
@@ -229,7 +230,7 @@ function moveUpdate() {
             deleteRGTable();
             sendToHTMLgameOver();
             addRecentGame(newScore, secondsCounted, bodyLength, collectedFood);
-            for (let i = 0; i < recentGamesArray.length; i++) {
+            for (let i = 0; i < allRecentGamesArr.length; i++) {
                 recentGamesTableWriter(i);
             }
         }
@@ -265,15 +266,21 @@ function sendToHTMLgameOver() {
 }
 
 function updateHighScore() {
-    // if (HSArr.length < 4) {
-    //     writeHighScore();
-    // }
+    if (highScoreArr
+    .length < 4) { 
+        writeHighScore(); 
+    } 
     if (newScore + secondsCounted + bodyLength + collectedFood > highScore + highSeconds + highLength + highColected) {
         highScore = newScore;
         highSeconds = secondsCounted;
         highLength = bodyLength;
         highColected = collectedFood;
-    } else if (recentGamesArray.length < 1) {
+    } else if (JSON.stringify(allRecentGamesArr) === JSON.stringify([0, 0, 0, 0])) {
+    highScore = newScore;
+    highSeconds = secondsCounted;
+    highLength = bodyLength;
+    highColected = collectedFood;
+    } {
         highScore = newScore;
         highSeconds = secondsCounted;
         highLength = bodyLength;
@@ -285,21 +292,29 @@ function updateHighScore() {
         highLength = bodyLength;
         highColected = collectedFood;
     }
-    LiveHighScore.innerHTML = highScore;
-    LiveHighSeconds.innerHTML = highSeconds;
-    LiveHighSnakeLength.innerHTML = highLength;
-    LiveHighFootEaten.innerHTML = highColected;
+    liveHighScore.innerHTML = highScore;
+    liveHighSeconds.innerHTML = highSeconds;
+    liveHighSnakeLength.innerHTML = highLength;
+    liveHighFootEaten.innerHTML = highColected;
 }
 
-// function writeHighScore() {
-//     HSArr = JSON.parse(localStorage.getItem("LHSArr"));
-//     alert(HSArr)
-//     highScore = HSArr[0];
-//     highSeconds = HSArr[1];
-//     highLength = HSArr[2];
-//     highColected = HSArr[3];
-//
-// }
+
+function writeHighScore() {
+    highScoreArr
+ = JSON.parse(localStorage.getItem("LHSArr"));
+    alert(highScoreArr
+)
+    highScore = highScoreArr
+[0];
+    highSeconds = highScoreArr
+[1];
+    highLength = highScoreArr
+[2];
+    highColected = highScoreArr
+[3];
+
+}
+
 
 function recentGamesTableWriter (i) {
     let table = document.getElementById("recentGamesTable");
@@ -308,15 +323,15 @@ function recentGamesTableWriter (i) {
     let cell2 = row.insertCell(1);
     let cell3 = row.insertCell(2);
     let cell4 =  row.insertCell(3);
-    cell1.innerHTML = recentGamesArray[i][0].toString();
-    cell2.innerHTML = recentGamesArray[i][1].toString();
-    cell3.innerHTML = recentGamesArray[i][2].toString();
-    cell4.innerHTML = recentGamesArray[i][3].toString();
+    cell1.innerHTML = allRecentGamesArr[i][0].toString();
+    cell2.innerHTML = allRecentGamesArr[i][1].toString();
+    cell3.innerHTML = allRecentGamesArr[i][2].toString();
+    cell4.innerHTML = allRecentGamesArr[i][3].toString();
 }
 
 function addRecentGame(score, seconds, length, colected) {
     recentGame.push(score, seconds, length, colected);
-    recentGamesArray.push(recentGame);
+    allRecentGamesArr.push(recentGame);
     recentGame = [];
 }
 
@@ -328,14 +343,22 @@ function deleteRGTable () {
 }
 
 function localStorageWriter () {
-    localStorage.removeItem(recentGamesArray);
-    // localStorage.removeItem(HSArr);
-    localStorage.setItem("LRGArr", JSON.stringify(recentGamesArray));
-    // localStorage.setItem("LHSArr", JSON.stringify(HSArr));
+    localStorage.deleteArray(allRecentGamesArr);
+    localStorage.deleteArray(highScoreArr
+); 
+    localStorage.setItem("LRGArr", JSON.stringify(allRecentGamesArr));
+    localStorage.setItem("LHSArr", JSON.stringify(highScoreArr
+)); 
 }
-//function localStorageReader () {
-    //recentGamesArray = JSON.parse(localStorageRGArrtem("LRGArr"));
-// }
+function localStorageReader () {
+    allRecentGamesArr = JSON.parse(localStorage.getItem("LRGArr"));
+}
+
+//---------------
+Storage.prototype.deleteArray = function(arrayName) {
+    this.removeItem(arrayName);
+}
+//--------------
 
 
 function hide () {
@@ -348,5 +371,5 @@ function hide () {
 LSClearButton.onclick = function () {
     localStorage.clear();
     deleteRGTable();
-    recentGamesArray = [];
+    allRecentGamesArr = [];
 }
